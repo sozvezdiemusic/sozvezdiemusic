@@ -1,240 +1,110 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>sozvezdie music</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            background-color: #000000;
-            color: #ffffff;
-            font-family: 'Arial', sans-serif;
-            line-height: 1.6;
-            padding: 6vh 10vw; /* Увеличил основные отступы */
-            box-sizing: border-box;
-            position: relative;
-            overflow-x: hidden;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Галактическая Дистрибуция</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Orbitron', sans-serif;
+      background-color: black;
+      overflow: hidden;
+    }
 
-        .star-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-            overflow: hidden;
-        }
+    #loadingOverlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: radial-gradient(circle, #222, #000);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease;
+    }
+    .loader {
+      width: 60px;
+      height: 60px;
+      border: 8px solid #444;
+      border-top: 8px solid #0ff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
 
-        .star-layer {
-            position: absolute;
-            width: 100%;
-            height: 300%;
-            top: 0;
-            left: 0;
-        }
+    .stars {
+      background-color: black;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
 
-        .star {
-            position: absolute;
-            background-color: white;
-            border-radius: 50%;
-        }
-
-        h1 {
-            margin: 0;
-            font-weight: 700;
-            font-size: clamp(2rem, 8vw, 3.5rem);
-            background: linear-gradient(90deg, #8a2be2, #4dabf7);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 4vh; /* Увеличил отступ */
-            letter-spacing: 1px;
-            white-space: nowrap;
-        }
-
-        .tagline {
-            font-size: clamp(0.9rem, 3vw, 1.2rem);
-            opacity: 0.8;
-            margin-bottom: 6vh; /* Увеличил отступ */
-            max-width: 90vw;
-            line-height: 1.7;
-            padding: 0 5vw;
-        }
-
-        .pricing {
-            margin: 4vh 0; /* Увеличил вертикальные отступы */
-            background: rgba(17, 17, 17, 0.8);
-            padding: clamp(30px, 5vw, 40px); /* Увеличил внутренние отступы */
-            border-radius: 15px;
-            width: min(80vw, 500px); /* Уменьшил ширину для большего пространства по бокам */
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin-left: 50px; /* Большие отступы по бокам */
-            margin-right: 30px;
-        }
-
-        .pricing h2 {
-            font-size: clamp(1.3rem, 5vw, 1.8rem);
-            margin-bottom: 4vh; /* Увеличил отступ */
-            color: #ffffff;
-            position: relative;
-            display: inline-block;
-        }
-
-        .pricing h2::after {
-            content: "";
-            position: absolute;
-            bottom: -2vh; /* Увеличил отступ */
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px; /* Увеличил ширину */
-            height: 3px; /* Увеличил толщину */
-            background: linear-gradient(90deg, #8a2be2, #4dabf7);
-        }
-
-        .price-item {
-            margin: 4vh 0; /* Увеличил отступы */
-            padding: clamp(20px, 3vw, 25px); /* Увеличил отступы */
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .price-item:last-child {
-            border-bottom: none;
-        }
-
-        .price-item h3 {
-            color: #8a2be2;
-            margin-bottom: 2vh; /* Увеличил отступ */
-            font-size: clamp(1.1rem, 4vw, 1.5rem);
-            letter-spacing: 0.5px;
-        }
-
-        .price-item p {
-            font-size: clamp(1rem, 4vw, 1.4rem);
-            margin: 0;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-
-        .order-button {
-            margin-top: 6vh; /* Увеличил отступ */
-            padding: clamp(15px, 3vw, 20px) clamp(35px, 6vw, 50px); /* Увеличил размер */
-            background: linear-gradient(90deg, #8a2be2, #4dabf7);
-            color: white;
-            border: none;
-            border-radius: 35px;
-            font-size: clamp(1rem, 3.5vw, 1.2rem); /* Увеличил шрифт */
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 0 5px 20px rgba(138, 43, 226, 0.5);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding: 6vh 8vw; /* Большие отступы на мобильных */
-            }
-            .pricing {
-                width: 85vw; /* Чуть шире на мобильных */
-                margin-left: 25px;
-                margin-right: 25px;
-                padding: 30px 25px; /* Большие отступы внутри */
-            }
-        }
-    </style>
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      opacity: 1;
+      animation: starFade 2s infinite;
+    }
+    @keyframes starFade {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+  </style>
 </head>
 <body>
-    <div class="star-container">
-        <div class="star-layer" id="starsBack"></div>
-        <div class="star-layer" id="starsMid"></div>
-        <div class="star-layer" id="starsFront"></div>
-    </div>
-    
-    <h1>sozvezdie music</h1>
-    <p class="tagline">лейбл предоставляющий услуги дистрибьюции с заботой о каждом артисте</p>
 
-    <div class="pricing">
-        <h2>Наши тарифы</h2>
-        <div class="price-item">
-            <h3>Стандарт</h3>
-            <p>5000₽/месяц</p>
-        </div>
-        <div class="price-item">
-            <h3>Премиум</h3>
-            <p>10000₽/месяц</p>
-        </div>
-        <div class="price-item">
-            <h3>VIP</h3>
-            <p>20000₽/месяц</p>
-        </div>
-    </div>
+  <div id="loadingOverlay">
+    <div class="loader"></div>
+  </div>
 
-    <button class="order-button">Заказать</button>
+  <div class="stars" id="starsContainer"></div>
 
-    <script>
-        // Создание звезд для слоя
-        function createStarLayer(container, count, sizeRange, opacityRange, speedFactor) {
-            const docHeight = document.documentElement.scrollHeight;
-            const layerHeight = docHeight * 3;
-            
-            container.style.height = `${layerHeight}px`;
-            
-            for (let i = 0; i < count; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                
-                const size = Math.random() * (sizeRange[1] - sizeRange[0]) + sizeRange[0];
-                star.style.width = `${size}px`;
-                star.style.height = `${size}px`;
-                
-                star.style.left = `${Math.random() * 100}vw`;
-                star.style.top = `${Math.random() * layerHeight}px`;
-                
-                const opacity = Math.random() * (opacityRange[1] - opacityRange[0]) + opacityRange[0];
-                star.style.opacity = opacity;
-                
-                star.dataset.speed = speedFactor;
-                
-                container.appendChild(star);
-            }
-        }
+  <script>
+    window.addEventListener('load', () => {
+      const overlay = document.getElementById('loadingOverlay');
+      const starsContainer = document.getElementById('starsContainer');
 
-        createStarLayer(document.getElementById('starsBack'), 100, [1, 1.5], [0.1, 0.3], 0.2);
-        createStarLayer(document.getElementById('starsMid'), 200, [1, 2], [0.3, 0.6], 0.5);
-        createStarLayer(document.getElementById('starsFront'), 150, [1.5, 3], [0.6, 0.9], 0.8);
+      const starCount = 180;
+      for (let i = 0; i < starCount; i++) {
+        createStar();
+      }
 
-        window.addEventListener('scroll', function() {
-            const scrollY = window.scrollY;
-            const starsBack = document.getElementById('starsBack');
-            const starsMid = document.getElementById('starsMid');
-            const starsFront = document.getElementById('starsFront');
-            
-            starsBack.style.transform = `translateY(${-scrollY * 0.2}px)`;
-            starsMid.style.transform = `translateY(${-scrollY * 0.5}px)`;
-            starsFront.style.transform = `translateY(${-scrollY * 0.8}px)`;
+      setTimeout(() => {
+        overlay.style.opacity = 0;
+        setTimeout(() => {
+          overlay.style.display = 'none';
+
+          starsContainer.style.opacity = 1;
+        }, 500);
+      }, 1000);
+
+      function createStar() {
+        const star = document.createElement('div');
+        star.className = 'star';
+        const size = Math.random() * 2 + 1; // Размер звезды
+        star.style.width = star.style.height = `${size}px`;
+        star.style.top = `${Math.random() * 100}%`;
+        star.style.left = `${Math.random() * 100}%`;
+        star.style.animationDuration = `${Math.random() * 1.5 + 1}s`;
+        star.addEventListener('animationend', () => {
+          star.remove();
+          createStar();
         });
-
-        window.addEventListener('resize', function() {
-            document.getElementById('starsBack').innerHTML = '';
-            document.getElementById('starsMid').innerHTML = '';
-            document.getElementById('starsFront').innerHTML = '';
-            
-            createStarLayer(document.getElementById('starsBack'), 100, [1, 1.5], [0.1, 0.3], 0.2);
-            createStarLayer(document.getElementById('starsMid'), 200, [1, 2], [0.3, 0.6], 0.5);
-            createStarLayer(document.getElementById('starsFront'), 150, [1.5, 3], [0.6, 0.9], 0.8);
-        });
-    </script>
+        starsContainer.appendChild(star);
+      }
+    });
+  </script>
 </body>
 </html>
 
