@@ -18,7 +18,7 @@
             color: #ffffff;
             font-family: 'Arial', sans-serif;
             line-height: 1.6;
-            padding: 5vh 5vw;
+            padding: 6vh 10vw; /* Увеличил основные отступы */
             box-sizing: border-box;
             position: relative;
             overflow-x: hidden;
@@ -57,7 +57,7 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            margin-bottom: 2vh;
+            margin-bottom: 4vh; /* Увеличил отступ */
             letter-spacing: 1px;
             white-space: nowrap;
         }
@@ -65,25 +65,27 @@
         .tagline {
             font-size: clamp(0.9rem, 3vw, 1.2rem);
             opacity: 0.8;
-            margin-bottom: 5vh;
+            margin-bottom: 6vh; /* Увеличил отступ */
             max-width: 90vw;
             line-height: 1.7;
             padding: 0 5vw;
         }
 
         .pricing {
-            margin: 3vh 0;
+            margin: 4vh 0; /* Увеличил вертикальные отступы */
             background: rgba(17, 17, 17, 0.8);
-            padding: clamp(20px, 3vw, 30px);
+            padding: clamp(30px, 5vw, 40px); /* Увеличил внутренние отступы */
             border-radius: 15px;
-            width: min(90vw, 550px);
+            width: min(80vw, 500px); /* Уменьшил ширину для большего пространства по бокам */
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-left: 30px; /* Большие отступы по бокам */
+            margin-right: 30px;
         }
 
         .pricing h2 {
             font-size: clamp(1.3rem, 5vw, 1.8rem);
-            margin-bottom: 3vh;
+            margin-bottom: 4vh; /* Увеличил отступ */
             color: #ffffff;
             position: relative;
             display: inline-block;
@@ -92,17 +94,17 @@
         .pricing h2::after {
             content: "";
             position: absolute;
-            bottom: -1vh;
+            bottom: -2vh; /* Увеличил отступ */
             left: 50%;
             transform: translateX(-50%);
-            width: 50px;
-            height: 2px;
+            width: 60px; /* Увеличил ширину */
+            height: 3px; /* Увеличил толщину */
             background: linear-gradient(90deg, #8a2be2, #4dabf7);
         }
 
         .price-item {
-            margin: 3vh 0;
-            padding: clamp(15px, 2vw, 20px);
+            margin: 4vh 0; /* Увеличил отступы */
+            padding: clamp(20px, 3vw, 25px); /* Увеличил отступы */
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
@@ -112,7 +114,7 @@
 
         .price-item h3 {
             color: #8a2be2;
-            margin-bottom: 1vh;
+            margin-bottom: 2vh; /* Увеличил отступ */
             font-size: clamp(1.1rem, 4vw, 1.5rem);
             letter-spacing: 0.5px;
         }
@@ -125,13 +127,13 @@
         }
 
         .order-button {
-            margin-top: 5vh;
-            padding: clamp(12px, 2vw, 18px) clamp(30px, 5vw, 45px);
+            margin-top: 6vh; /* Увеличил отступ */
+            padding: clamp(15px, 3vw, 20px) clamp(35px, 6vw, 50px); /* Увеличил размер */
             background: linear-gradient(90deg, #8a2be2, #4dabf7);
             color: white;
             border: none;
             border-radius: 35px;
-            font-size: clamp(0.9rem, 3vw, 1.1rem);
+            font-size: clamp(1rem, 3.5vw, 1.2rem); /* Увеличил шрифт */
             font-weight: 600;
             cursor: pointer;
             box-shadow: 0 5px 20px rgba(138, 43, 226, 0.5);
@@ -141,10 +143,13 @@
 
         @media (max-width: 768px) {
             body {
-                padding: 5vh 3vw;
+                padding: 6vh 8vw; /* Большие отступы на мобильных */
             }
             .pricing {
-                width: 95vw;
+                width: 85vw; /* Чуть шире на мобильных */
+                margin-left: 25px;
+                margin-right: 25px;
+                padding: 30px 25px; /* Большие отступы внутри */
             }
         }
     </style>
@@ -181,7 +186,7 @@
         // Создание звезд для слоя
         function createStarLayer(container, count, sizeRange, opacityRange, speedFactor) {
             const docHeight = document.documentElement.scrollHeight;
-            const layerHeight = docHeight * 3; // В 3 раза больше высоты документа
+            const layerHeight = docHeight * 3;
             
             container.style.height = `${layerHeight}px`;
             
@@ -189,45 +194,37 @@
                 const star = document.createElement('div');
                 star.className = 'star';
                 
-                // Размер звезды
                 const size = Math.random() * (sizeRange[1] - sizeRange[0]) + sizeRange[0];
                 star.style.width = `${size}px`;
                 star.style.height = `${size}px`;
                 
-                // Позиция
                 star.style.left = `${Math.random() * 100}vw`;
                 star.style.top = `${Math.random() * layerHeight}px`;
                 
-                // Прозрачность
                 const opacity = Math.random() * (opacityRange[1] - opacityRange[0]) + opacityRange[0];
                 star.style.opacity = opacity;
                 
-                // Сохраняем скорость для этого слоя
                 star.dataset.speed = speedFactor;
                 
                 container.appendChild(star);
             }
         }
 
-        // Создаем три слоя звезд с разной скоростью параллакса
         createStarLayer(document.getElementById('starsBack'), 100, [1, 1.5], [0.1, 0.3], 0.2);
         createStarLayer(document.getElementById('starsMid'), 200, [1, 2], [0.3, 0.6], 0.5);
         createStarLayer(document.getElementById('starsFront'), 150, [1.5, 3], [0.6, 0.9], 0.8);
 
-        // Обработчик прокрутки для эффекта параллакса
         window.addEventListener('scroll', function() {
             const scrollY = window.scrollY;
             const starsBack = document.getElementById('starsBack');
             const starsMid = document.getElementById('starsMid');
             const starsFront = document.getElementById('starsFront');
             
-            // Двигаем слои с разной скоростью
             starsBack.style.transform = `translateY(${-scrollY * 0.2}px)`;
             starsMid.style.transform = `translateY(${-scrollY * 0.5}px)`;
             starsFront.style.transform = `translateY(${-scrollY * 0.8}px)`;
         });
 
-        // Обновляем звезды при изменении размера окна
         window.addEventListener('resize', function() {
             document.getElementById('starsBack').innerHTML = '';
             document.getElementById('starsMid').innerHTML = '';
