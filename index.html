@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Галактическая Дистрибуция</title>
-  <script src="stars.js"></script>
+  <script src="batch.js"></script>
 
   <style>
     body {
@@ -71,29 +71,9 @@
 
   <div class="stars" id="starsContainer"></div>
 
-  <script>
-    window.addEventListener('load', () => {
-      const overlay = document.getElementById('loadingOverlay');
-      const starsContainer = document.getElementById('starsContainer');
-
-      const starCount = 180;
-      for (let i = 0; i < starCount; i++) {
-        createStar();
-      }
-
-      setTimeout(() => {
-        overlay.style.opacity = 0;
-        setTimeout(() => {
-          overlay.style.display = 'none';
-
-          starsContainer.style.opacity = 1;
-        }, 500);
-      }, 1000);
-
-      
-  </script>
 </body>
 </html>
+
 
 
 
