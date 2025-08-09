@@ -1,3 +1,20 @@
+window.addEventListener('load', () => {
+      const overlay = document.getElementById('loadingOverlay');
+      const starsContainer = document.getElementById('starsContainer');
+
+      const starCount = 180;
+      for (let i = 0; i < starCount; i++) {
+        createStar();
+      }
+
+      setTimeout(() => {
+        overlay.style.opacity = 0;
+        setTimeout(() => {
+          overlay.style.display = 'none';
+          starsContainer.style.opacity = 1;
+        }, 500);
+      }, 1000);
+
 function createStar() {
         const star = document.createElement('div');
         star.className = 'star';
@@ -13,22 +30,3 @@ function createStar() {
         starsContainer.appendChild(star);
       }
     });
-
-
-window.addEventListener('load', () => {
-      const overlay = document.getElementById('loadingOverlay');
-      const starsContainer = document.getElementById('starsContainer');
-
-      const starCount = 180;
-      for (let i = 0; i < starCount; i++) {
-        createStar();
-      }
-
-      setTimeout(() => {
-        overlay.style.opacity = 0;
-        setTimeout(() => {
-          overlay.style.display = 'none';
-
-          starsContainer.style.opacity = 1;
-        }, 500);
-      }, 1000);
