@@ -3,74 +3,230 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="telegram-web-app-theme-color" content="#000000">
   <title>sozvezdie music</title>
-  <link rel="stylesheet" href="batch.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Orbitron', sans-serif;
+      background-color: black;
+      overflow: hidden;
+      color: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-  
+    #loadingOverlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: radial-gradient(circle, #222, #000);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease;
+    }
+    .loader {
+      width: 60px;
+      height: 60px;
+      border: 8px solid #444;
+      border-top: 8px solid #0ff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
 
+    .stars {
+      background-color: black;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      opacity: 1;
+      animation: starFade 2s infinite;
+    }
+    @keyframes starFade {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    /* Основные панели */
+    .panel {
+      background: rgba(10, 10, 30, 0.8) !important; /* Более прозрачный фон */
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      border: 1px solid rgba(100, 150, 255, 0.15);
+      margin: 15px;
+      padding: 20px;
+      flex-grow: 1;
+      overflow: auto;
+      position: relative;
+    }
+
+    .panel h2 {
+      color: #8a8aff;
+      margin-top: 0;
+      font-weight: 500;
+    }
+
+    /* Навигационная панель */
+    .nav-panel {
+      display: flex;
+      background: rgba(15, 10, 30, 0.8);
+      border-top: 1px solid rgba(100, 150, 255, 0.15);
+      padding: 10px 10px;
+    }
+
+    .nav-button {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #7a7aff; /* Более приглушенный цвет */
+      text-decoration: none;
+      font-size: 12px;
+      padding: 8px 5px;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+
+
+    }
+
+    .nav-button i {
+      font-size: 18px; /* Уменьшен размер иконок */
+      margin-bottom: 5px;
+    }
+
+    .nav-button.active {
+      color: #8a8aff;
+      background: rgba(100, 150, 255, 0.1); /* Более тонкое выделение */
+    }
+
+    /* Сетка для панели (очень тонкая) */
+    .panel::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 12px;
+      background: 
+        linear-gradient(90deg, transparent 95%, rgba(100, 150, 255, 0.03) 100%) 0 0 / 25px 25px,
+        linear-gradient(0deg, transparent 95%, rgba(100, 150, 255, 0.03) 100%) 0 0 / 25px 25px;
+      pointer-events: none;
+      z-index: -2;
+    }
+  </style>
 </head>
 <body>
-  
   <div id="loadingOverlay">
     <div class="loader"></div>
   </div>
   <div class="stars" id="starsContainer"></div>
 
-  <a href="https://sozvezdiemusic.github.io/create" class="button" target="_blank" rel="noopener noreferrer">Создать</a>
+  <div class="panel" id="mainPanel">
+    <h2>SOZVEZDIE MUSIC</h2>
+    <p>Добро пожаловать в музыкальную вселенную</p>
+    <p>Выберите раздел в навигации ниже</p>
+  </div>
 
-<script>
-  window.addEventListener('load', () => {
-  const overlay = document.getElementById('loadingOverlay');
-  const starsContainer = document.getElementById('starsContainer');
-  
-  // Изначально делаем контейнер звезд прозрачным
-  starsContainer.style.opacity = '0';
-  
-  const starCount = 180;
-  
-  // Создаем начальные звезды
-  for (let i = 0; i < starCount; i++) {
-    createStar();
-  }
-  
-  // Через секунду начинаем исчезновение overlay
-  setTimeout(() => {
-    overlay.style.opacity = '0';
-    
-    // После завершения анимации исчезновения overlay
-    setTimeout(() => {
-      overlay.style.display = 'none';
-      // Показываем звезды
-      starsContainer.style.opacity = '1';
-    }, 500);
-  }, 1000);
-  
-  function createStar() {
-    const star = document.createElement('div');
-    star.className = 'star';
-    const size = Math.random() * 2 + 1;
-    star.style.width = star.style.height = `${size}px`;
-    star.style.top = `${Math.random() * 100}%`;
-    star.style.left = `${Math.random() * 100}%`;
-    star.style.animationDuration = `${Math.random() * 1.5 + 1}s`;
-    
-    star.addEventListener('animationend', () => {
-      // Перемещаем звезду на новую позицию вместо удаления/создания
-      star.style.top = `${Math.random() * 100}%`;
-      star.style.left = `${Math.random() * 100}%`;
-      // Сбрасываем анимацию
-      star.style.animation = 'none';
-      star.offsetHeight; // Триггер reflow
-      star.style.animation = '';
-      star.style.animationDuration = `${Math.random() * 1.5 + 1}s`;
+  <div class="nav-panel">
+
+    <a href="#" class="nav-button active" data-panel="main">
+      <i class="fas fa-home"></i>
+      Главная
+    </a>
+    <a href="#" class="nav-button" data-panel="releases">
+      <i class="fas fa-music"></i>
+      Релизы
+    </a>
+    <a href="#" class="nav-button" data-panel="create">
+      <i class="fas fa-plus-circle"></i>
+      Создать
+    </a>
+    <a href="#" class="nav-button" data-panel="profile">
+      <i class="fas fa-user-astronaut"></i>
+      Профиль
+    </a>
+  </div>
+
+
+
+  <script>
+    // Инициализация звездного фона
+    window.addEventListener('load', () => {
+      const overlay = document.getElementById('loadingOverlay');
+      const starsContainer = document.getElementById('starsContainer');
+      
+      starsContainer.style.opacity = 1;
+      const starCount = 200;
+      
+      for (let i = 0; i < starCount; i++) {
+        createStar();
+      }
+
+      setTimeout(() => {
+        overlay.style.opacity = 0;
+        setTimeout(() => {
+          overlay.style.display = 'none';
+        }, 500);
+      }, 1000);
+
+      function createStar() {
+        const star = document.createElement('div');
+        star.className = 'star';
+        const size = Math.random() * 2 + 1;
+        star.style.width = star.style.height = `${size}px`;
+        star.style.top = `${Math.random() * 100}%`;
+        star.style.left = `${Math.random() * 100}%`;
+        star.style.animationDuration = `${Math.random() * 1.5 + 1}s`;
+        star.style.animationDelay = `${Math.random() * 2}s`;
+        starsContainer.appendChild(star);
+      }
+
+      // Навигация между панелями
+      const navButtons = document.querySelectorAll('.nav-button');
+      const panels = {
+        main: document.getElementById('mainPanel'),
+        // Здесь можно добавить другие панели
+      };
+
+      navButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+          e.preventDefault();
+          navButtons.forEach(btn => btn.classList.remove('active'));
+          this.classList.add('active');
+          const panelName = this.getAttribute('data-panel');
+          // Логика переключения панелей
+        });
+      });
+
+      // Инициализация Telegram WebApp
+      if (window.Telegram && Telegram.WebApp) {
+        Telegram.WebApp.expand();
+        Telegram.WebApp.enableClosingConfirmation();
+        Telegram.WebApp.setHeaderColor('#000000');
+        Telegram.WebApp.setBackgroundColor('#000000');
+      }
     });
-    
-    starsContainer.appendChild(star);
-  }
-});
-</script>
+  </script>
 </body>
 </html>
-
-
-
